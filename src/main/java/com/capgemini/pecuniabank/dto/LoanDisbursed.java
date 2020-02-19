@@ -25,7 +25,7 @@ public class LoanDisbursed {
 		this.loanEmi = loanEmi;
 		this.tenure = tenure;
 	}
-	public String getLoanRequestId() {
+/*	public String getLoanRequestId() {
 		return loanRequestId;
 	}
 	public void setLoanRequestId(String loanRequestId) {
@@ -72,6 +72,6 @@ public class LoanDisbursed {
 	}
 	public void setTenure(int tenure) {
 		this.tenure = tenure;
-	}
+	}*/
 
 }

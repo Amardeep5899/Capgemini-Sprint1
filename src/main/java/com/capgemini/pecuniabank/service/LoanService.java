@@ -10,6 +10,7 @@ import com.capgemini.pecuniabank.dto.AccountManagement;
 import com.capgemini.pecuniabank.dto.LoanDisbursed;
 import com.capgemini.pecuniabank.dto.LoanRequest;
 import com.capgemini.pecuniabank.exception.InvalidDataException;
+import com.capgemini.pecuniabank.exception.InvalidInputDataException;
 import com.capgemini.pecuniabank.util.AccountManagementRepository;
 import com.capgemini.pecuniabank.util.LoanDisbursedRepository;
 import com.capgemini.pecuniabank.util.LoanRequestRepository;
@@ -18,16 +19,16 @@ public class LoanService {
 	 
 	static ArrayList<LoanDisbursed> loanUsers=new ArrayList<LoanDisbursed>();
 	static ArrayList <AccountManagement> accountUsers=new ArrayList<AccountManagement>();
-	public boolean validateCustomerId(String loanCustomerId)
+	public boolean validateRequestId(String loanRequestId)
 	{
-		LoanDisbursedRepository lrr=new LoanDisbursedRepository ();
+		/*LoanDisbursedRepository lrr=new LoanDisbursedRepository ();
 		loanUsers=lrr.getLoanUsers1();
 		for(LoanDisbursed lr:loanUsers)
 		{
-			System.out.println("cid:"+lr);
-			if(loanCustomerId.equals(lr.getLoanCustomerId()))
+			System.out.println("cid:"+lr);*/
+			if(loanRequestId.length()==12)
 				return true;
-		}
+		
 		
 		return false;
 	}
@@ -102,10 +103,13 @@ public class LoanService {
 		return loanrequest;
 		
 	}
-	public String createLoanRequest(String loanCustomerId2, double loanAmount2, String loanType2, int tenure, double loanRoi, String loanStatus2) throws InvalidDataException
+	public String createLoanRequest(String loanRequestId,String loanCustomerId2, double loanAmount2, String loanType2, int tenure, double loanRoi, String loanStatus2,int creditScore) throws InvalidDataException
 	{
+	//	String loanRequestId=null;
+		//int creditScore=null;
 		 ArrayList<LoanRequest> loanrequest=new ArrayList<LoanRequest>();
-		LoanRequest lr=new LoanRequest("34433487437","Vishal2093",328248.00,"home loan",5,12.5,"Current",calculateEmi(328248.00, 5, 12.5),750);
+		//LoanRequest lr=new LoanRequest("34433487437","Vishal2093",328248.00,"home loan",5,12.5,"Current",calculateEmi(328248.00, 5, 12.5),750);
+		LoanRequest lr=new LoanRequest(loanRequestId,loanCustomerId2, loanAmount2, loanType2, tenure, loanRoi,loanStatus2,calculateEmi(loanAmount2,tenure,loanRoi),creditScore);
 		loanrequest=updateLoanList( lr);
 		LoanRequestRepository lrr= new LoanRequestRepository();
 		loanrequest=approveLoan(loanrequest);
@@ -137,6 +141,57 @@ public class LoanService {
 		return loanCustomerId;
 		
 	}
+	
+	//
+	/* public boolean validateData(String loanRequestId, String loanCustromerId, double amount, String type, int tenure, double roi,
+				String status, int creditScore) throws InvalidInputDataException
+	 {
+		 if(loanRequestID.length()==12 && stringContainsNumber(loanRequestID) ) 
+		 {
+		 if(loanCustomerID.length()==12 && stringContainsNumber(loanCustomerID) ) 
+			{
+				if(amount>=100.00||amount<=200000.00)
+				{
+					if(type.equals("home loan") || type.equals("education loan"))
+					{
+						if(tenure<10)
+						{
+							if(roi>5 || roi<25)
+							{
+								if(status.equals("not approved"))
+								{
+									if(creditScore<1000)
+										{
+											return true;
+										}
+							        else
+							           	{
+							        		throw new InvalidInputDataException("InvalidAccountException : "+"Invalid Credit Score");
+								
+							           	}
+								}
+								else
+									{
+										throw new InvalidInputDataException("InvalidAccountException : "+"Invalid rate of interest");
+									}
+								}
+						else
+							{
+								throw new InvalidInputDataException("InvalidAccountException : "+"Invalid tenure");
+					}
+				}
+				else
+				{
+					throw new InvalidInputDataException("InvalidAccountException : "+"Invalid cheque amount");
+				}
+			}
+		 else
+		 {
+			 throw new InvalidInputDataException("InvalidAccountException : "+"Invalid accountId");
+		 }
+		 
+	 }
+	 */
 	
 	
 	

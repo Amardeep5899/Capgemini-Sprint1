@@ -19,9 +19,9 @@ public class LoanRequestRepository {
 	}
 
 	public boolean setLoanUsers(LoanRequest lr) {
-		loanUsers.add(new LoanRequest( "34433487437","Vishal2093",328248.00,"home loan",5,12.5,"not approved",lsd.calculateEmi(328248.00, 5, 12.5),750));
-		loanUsers.add(new LoanRequest(  "34433487487","Amardeep3456",428248.00,"education loan",4,10.5,"not approved",lsd.calculateEmi(428248.00,4,10.5),960));
-		loanUsers.add(new LoanRequest(  "34433487497","Raj2345",528248.00,"home loan",3,8.5,"not approved",lsd.calculateEmi(528248.00,3,8.5),770));
+		loanUsers.add(new LoanRequest( "344334874373","Vishal2093",328248.00,"home loan",5,12.5,"not approved",lsd.calculateEmi(328248.00, 5, 12.5),750));
+		loanUsers.add(new LoanRequest(  "344334874874","Amardeep3456",428248.00,"education loan",4,10.5,"not approved",lsd.calculateEmi(428248.00,4,10.5),960));
+		loanUsers.add(new LoanRequest(  "344334874975","Raj2345",528248.00,"home loan",3,8.5,"not approved",lsd.calculateEmi(528248.00,3,8.5),770));
 		loanUsers.add(lr);
 		return true;
 	}

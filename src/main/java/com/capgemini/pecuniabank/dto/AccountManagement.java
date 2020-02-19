@@ -14,7 +14,7 @@ private Date lastUpdated;
 public String getAccountId() {
 return accountId;
 }
-public void setAccountId(String accountId) {
+/*public void setAccountId(String accountId) {
 this.accountId = accountId;
 }
 public String getAccountHolderId() {
@@ -58,7 +58,7 @@ return lastUpdated;
 }
 public void setLastUpdated(Date lastUpdated) {
 this.lastUpdated = lastUpdated;
-}
+}*/
 public AccountManagement(String accountId, String accountHolderId, String accountBranchId, String accountType,
 String accountStatus, Double accountBalance, Double accountInterest, Date lastUpdated) {
 super();
