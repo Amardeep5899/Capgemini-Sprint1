@@ -11,7 +11,8 @@ public class LoanRequest {
 	private double loanEmi;
 	private int creditScore;
 	public LoanRequest(String loanRequestId, String loanCustromerId, double amount, String type, int tenure, double roi,
-			String status, double loanEmi, int creditScore) {
+			String status, double loanEmi, int creditScore)
+	{
 		//super();
 		this.loanRequestId = loanRequestId;
 		this.loanCustromerId = loanCustromerId;
@@ -77,10 +78,10 @@ public class LoanRequest {
 	public void setCreditScore(int creditScore) {
 		this.creditScore = creditScore;
 	}
-	
+
 	public String toString()
 	{
-		return "loan request id is: "+loanRequestId + " "+loanCustromerId+ " " +amount+ " " +type+ " " +tenure+ " " +roi+ " " +status+ " " +loanEmi+ " " +creditScore;
+		return "loan request id is: "+loanRequestId +","+ "loan customer id is: "+loanCustromerId+","+ "loan amount is: " +amount+","+ "loan type is: " +type+","+ "loan tenure is: " +tenure+","+ "loan roi is: " +roi+","+ "loan status is:" +status+","+ "calculated loan emi is: " +loanEmi+","+ "loan creditscore is: " +creditScore;
 	}
 
 }

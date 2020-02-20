@@ -1,8 +1,7 @@
 package com.capgemini.pecuniabank.service;
 
-
-
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import com.capgemini.pecuniabank.dao.LoanDisbursedDao;
@@ -10,22 +9,15 @@ import com.capgemini.pecuniabank.dto.AccountManagement;
 import com.capgemini.pecuniabank.dto.LoanDisbursed;
 import com.capgemini.pecuniabank.dto.LoanRequest;
 import com.capgemini.pecuniabank.exception.InvalidDataException;
-import com.capgemini.pecuniabank.exception.InvalidInputDataException;
-import com.capgemini.pecuniabank.util.AccountManagementRepository;
-import com.capgemini.pecuniabank.util.LoanDisbursedRepository;
-import com.capgemini.pecuniabank.util.LoanRequestRepository;
 
-public class LoanService {
+
+public class LoanService implements LoanServiceInterface {
 	 
 	static ArrayList<LoanDisbursed> loanUsers=new ArrayList<LoanDisbursed>();
 	static ArrayList <AccountManagement> accountUsers=new ArrayList<AccountManagement>();
+	LoanDisbursedDao loanDisbursedDao=new LoanDisbursedDao();
 	public boolean validateRequestId(String loanRequestId)
 	{
-		/*LoanDisbursedRepository lrr=new LoanDisbursedRepository ();
-		loanUsers=lrr.getLoanUsers1();
-		for(LoanDisbursed lr:loanUsers)
-		{
-			System.out.println("cid:"+lr);*/
 			if(loanRequestId.length()==12)
 				return true;
 		
@@ -33,24 +25,16 @@ public class LoanService {
 		return false;
 	}
 	
-	public void releaseLoanList(ArrayList<LoanRequest> loanUsers)
-	{
-		for(LoanRequest lr:loanUsers)
-		{
-			System.out.println(lr);
-		}
-	}
+	
 	public boolean validateAccountExits(String accountId)
 	{
-		AccountManagementRepository acr=new AccountManagementRepository();
-		
-		accountUsers=acr.getAccountUsers();
+		accountUsers=loanDisbursedDao.getAccountDetails();
 	
-		for(AccountManagement am:accountUsers)
+		for(AccountManagement accountManagement:accountUsers)
 		{
 			
-		if(accountId.equals(am.getAccountId()))
-			return true;
+			if(accountId.equals(accountManagement.getAccountId()))
+				return true;
 			
 		}
 		
@@ -70,95 +54,54 @@ public class LoanService {
 	        return emi;
 		
 	}
-	public ArrayList<LoanRequest> approveLoan(ArrayList<LoanRequest> loanrequest)
-	{
-		for(LoanRequest lr: loanrequest) {
-			if(checkCreditScore( lr)==true)
-			{
-				lr.setStatus("approved");
-			}
-			}
-		return loanrequest;
-	}
-	public boolean checkCreditScore(LoanRequest lr)
+	public boolean checkCreditScore(LoanRequest loanRequest)
 	{
 		
-		if(lr.getCreditScore()>=700 &&lr.getCreditScore()<=900)
+		if(loanRequest.getCreditScore()>=700 &&loanRequest.getCreditScore()<=900)
 		{
-		return true;
+			return true;
 		}
 		
 			
 		return false;
 		
 	}
-	
-	public ArrayList<LoanRequest> updateLoanList(LoanRequest lr)
+	public ArrayList<LoanRequest> approveLoan(ArrayList<LoanRequest> loanrequest)
 	{
-		 ArrayList<LoanRequest> loanrequest=new ArrayList<LoanRequest>();
-		LoanRequestRepository lrr=new LoanRequestRepository ();
-		lrr.setLoanUsers( lr);
-		loanrequest=lrr.getLoanUsers();
-		
-		return loanrequest;
-		
-	}
-	public String createLoanRequest(String loanRequestId,String loanCustomerId2, double loanAmount2, String loanType2, int tenure, double loanRoi, String loanStatus2,int creditScore) throws InvalidDataException
-	{
-	//	String loanRequestId=null;
-		//int creditScore=null;
-		 ArrayList<LoanRequest> loanrequest=new ArrayList<LoanRequest>();
-		//LoanRequest lr=new LoanRequest("34433487437","Vishal2093",328248.00,"home loan",5,12.5,"Current",calculateEmi(328248.00, 5, 12.5),750);
-		LoanRequest lr=new LoanRequest(loanRequestId,loanCustomerId2, loanAmount2, loanType2, tenure, loanRoi,loanStatus2,calculateEmi(loanAmount2,tenure,loanRoi),creditScore);
-		loanrequest=updateLoanList( lr);
-		LoanRequestRepository lrr= new LoanRequestRepository();
-		loanrequest=approveLoan(loanrequest);
-		if(loanrequest!=null)
+		for(LoanRequest loanRequest: loanrequest) 
 		{
-			 ArrayList<LoanRequest> loanrequest1=new ArrayList<LoanRequest>();
-			 loanrequest1=approveLoan( loanrequest);
-			
-			 if( loanrequest1!=null)
-			 {
-				 LoanDisbursedDao ldd=new LoanDisbursedDao();
-				 if(ldd.updateLoanDisbursed()==true)
-					 releaseLoanList(loanrequest1);
-				 return " loan granted";
-			 }
-			 else
-			 {
-				 throw new InvalidDataException("low credit score not eligible for loan request");
-			 }
+			if(checkCreditScore(loanRequest)==true)
+			{
+				loanRequest.setStatus("approved");
+			}
 		}
-		
-		
-		return loanStatus2;
-		
+		return loanrequest;
 	}
 	
-	public String getCustomerRow(String loanCustomerId)
+	public void releaseLoanList(ArrayList<LoanRequest> loanUsers)
 	{
-		return loanCustomerId;
-		
+		for(LoanRequest loanRequest:loanUsers)
+		{
+			System.out.println(loanRequest);
+		}
 	}
 	
-	//
-	/* public boolean validateData(String loanRequestId, String loanCustromerId, double amount, String type, int tenure, double roi,
-				String status, int creditScore) throws InvalidInputDataException
+	 public boolean validateData(String loanRequestId, String loanCustomerId, double amount, String type, int tenure, double roi,
+				String status, int creditScore) throws InvalidDataException
 	 {
-		 if(loanRequestID.length()==12 && stringContainsNumber(loanRequestID) ) 
+		 if(loanRequestId.length()==12) 
 		 {
-		 if(loanCustomerID.length()==12 && stringContainsNumber(loanCustomerID) ) 
+		 if(loanCustomerId.length()==8) 
 			{
 				if(amount>=100.00||amount<=200000.00)
 				{
-					if(type.equals("home loan") || type.equals("education loan"))
+					if(type.equals("home") || type.equals("education"))
 					{
 						if(tenure<10)
 						{
 							if(roi>5 || roi<25)
 							{
-								if(status.equals("not approved"))
+								if(status.equals("not_approved"))
 								{
 									if(creditScore<1000)
 										{
@@ -166,37 +109,88 @@ public class LoanService {
 										}
 							        else
 							           	{
-							        		throw new InvalidInputDataException("InvalidAccountException : "+"Invalid Credit Score");
+							        		throw new InvalidDataException("creditscore is not valid");
 								
 							           	}
 								}
 								else
-									{
-										throw new InvalidInputDataException("InvalidAccountException : "+"Invalid rate of interest");
-									}
+								{
+										throw new InvalidDataException("status is invalid");
 								}
+							}
 						else
-							{
-								throw new InvalidInputDataException("InvalidAccountException : "+"Invalid tenure");
-					}
+						{
+								throw new InvalidDataException("rate of interest is invalid");
+						}
 				}
 				else
 				{
-					throw new InvalidInputDataException("InvalidAccountException : "+"Invalid cheque amount");
+					throw new InvalidDataException("tenure is invalid");
 				}
 			}
 		 else
 		 {
-			 throw new InvalidInputDataException("InvalidAccountException : "+"Invalid accountId");
+			 throw new InvalidDataException("type is not valid");
 		 }
 		 
 	 }
-	 */
+	}
+	}
+	return false;
+ }
 	
 	
+
+	public String createLoanRequest(String loanRequestId,String loanCustomerId2, double loanAmount2, String loanType2, int tenure, double loanRoi, String loanStatus2,int creditScore) throws InvalidDataException
+	{
+		if((validateData(loanRequestId,loanCustomerId2, loanAmount2, loanType2,tenure,loanRoi,loanStatus2, creditScore))==true)
+		{
+		
+		
+			ArrayList<LoanRequest> loanrequest=new ArrayList<LoanRequest>();
+		 
+			LoanRequest loanRequest=new LoanRequest(loanRequestId,loanCustomerId2, loanAmount2, loanType2, tenure, loanRoi,loanStatus2,calculateEmi(loanAmount2,tenure,loanRoi),creditScore);
+			loanrequest=loanDisbursedDao.updateLoanList(loanRequest);
 	
-	
+			loanrequest=approveLoan(loanrequest);//input loan data
+			if(loanrequest!=null)
+			{
+					ArrayList<LoanRequest> loanrequest1=new ArrayList<LoanRequest>();
+					loanrequest1=approveLoan( loanrequest);//approved loan data
+			
+						if( loanrequest1!=null)
+						{
+							LoanDisbursedDao loanDisbursedDao=new LoanDisbursedDao();
+							if(loanDisbursedDao.updateLoanDisbursed()==true)
+								releaseLoanList(loanrequest1);//loan disbursed data
+						}
+						else
+						{
+							throw new InvalidDataException("Loan request is invalid");
+						}
+			}
+			else
+			{
+				throw new InvalidDataException("Loan request is invalid");
+			}
+		}
+		else
+		{
+			 throw new InvalidDataException("Loan request is invalid");
+		}
+		
+	return "This is the release loan sheet according to our respective loan request";
+		
 }
+	
+	
+	 }
+	 
+	
+	
+	
+			
+
 
 	
 

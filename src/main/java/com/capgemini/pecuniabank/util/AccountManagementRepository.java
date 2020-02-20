@@ -1,13 +1,16 @@
 package com.capgemini.pecuniabank.util;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import com.capgemini.pecuniabank.dto.AccountManagement;
 
-public class AccountManagementRepository {
+public class AccountManagementRepository 
+{
 	static ArrayList <AccountManagement> accountUsers=new ArrayList<AccountManagement>();
-	public static ArrayList<AccountManagement> getAccountUsers() {
+	public static ArrayList<AccountManagement> getAccountUsers() 
+	{
 		return accountUsers;
 	}
 	
@@ -20,6 +23,6 @@ public class AccountManagementRepository {
 	accountUsers.add(new AccountManagement( "29874498714","Satyam8714","PUNBO339500","Savings","Active",5000.00,3.50,new Date(2020,02,03)));
 	accountUsers.add(new AccountManagement( "39871498291","Prabhjot8291","PUNBO339500","Current","Closed",0.00,0.00,new Date(2020,02,12)));
 	}
-	
+
 
 }

@@ -1,9 +1,9 @@
 package com.capgemini.pecuniabank.exception;
 
 public class InvalidDataException extends Exception {
-	 public InvalidDataException(String s)
+	 public InvalidDataException(String message)
 	 {
-		 super(s);
+		 super(message);
 	 }
-
+	
 }
