@@ -90,7 +90,7 @@ public class LoanServiceTest {
 	{
 		
 		try {
-		loanService.validateData("344334874373","Vishal20",32824.00,"home",5,12.5,"not approved",750);
+		loanService.validateData("344334874373","Vishal20",-32824.00,"home",5,12.5,"not approved",750);
 		} catch (InvalidDataException invalidDataException) {
 			// TODO Auto-generated catch block
 			assertEquals(invalidDataException.getMessage(),"status is invalid");

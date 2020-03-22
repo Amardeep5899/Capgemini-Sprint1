@@ -93,7 +93,7 @@ public class LoanService implements LoanServiceInterface {
 		 {
 		 if(loanCustomerId.length()==8) 
 			{
-				if(amount>=100.00||amount<=200000.00)
+				if((amount>=100.00 && amount<=200000.00) && amount>0)
 				{
 					if(type.equals("home") || type.equals("education"))
 					{

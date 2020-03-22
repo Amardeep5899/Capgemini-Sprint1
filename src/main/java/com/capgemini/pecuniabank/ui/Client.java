@@ -23,7 +23,7 @@ public class Client
 		System.out.println("Enter the Account id");
 		String accountId=scanner.next();
 
-					System.out.println("check if the loanRequestid is present or not ");
+				//	System.out.println("check if the loanRequestid is present or not ");
 		
 				
 				if(loanService.validateRequestId(loanRequestId)==true)
